@@ -22,7 +22,7 @@ object tic_tac_toe_2 {
             var flag = true
             val emptyCell = ' '
             var line: String
-            while (flag == true) {
+            while (flag) {
                 flag = false
                 line = scanner.nextLine()
                 if (!line.substring(0, 1).intOrString() ||
@@ -34,7 +34,7 @@ object tic_tac_toe_2 {
                 }
                 x = line.substring(0, 1).toInt()
                 y = line.substring(2, 3).toInt()
-                if (x > 0 && x < 4 && y > 0 && y < 4) {
+                if (x in (1..3) && y in (1..3)) {
                     if (toArray[x - 1][y - 1] != ' ') {
                         println("Эта клетка занята! Выберите другую!")
                         flag = true
@@ -57,15 +57,14 @@ object tic_tac_toe_2 {
                 }
             }
             var win = getWin(toArray)
-            if (win.length == 1) {
+            if (win.isNotEmpty()
+            ) {
                 quitt = win
                 break
             }
-            if (win.length == 0) {
-                if (free_cells == false) {
+            if (win.isEmpty() && !free_cells) {
                     quitt = "!"
                     break
-                }
             }
             var e_x: Int
             var e_y: Int
@@ -83,11 +82,11 @@ object tic_tac_toe_2 {
                     }
                 }
             }
-            if (win.length == 1) {
+            if (win.isNotEmpty()) {
                 quitt = win
                 break
             }
-            if (win.length == 0 && !free_cells) {
+            if (win.isEmpty() && !free_cells) {
                 quitt = "!"
                 break
             }
@@ -101,32 +100,30 @@ object tic_tac_toe_2 {
     }
 
     fun getWin(toArray: Array<CharArray>): String {
-        var win = ""
+        var win: Char = 'n'
         val emptyCell = ' '
-        win = ""
         if (toArray[0][0] == toArray[1][1] && toArray[0][0] == toArray[2][2] && toArray[0][0] != emptyCell) {
-            win = win + toArray[0][0]
+            win = toArray[0][0]
         }
         if (toArray[0][2] == toArray[1][1] && toArray[0][2] == toArray[2][0] && toArray[0][2] != emptyCell) {
-            win = win + toArray[0][0]
+            win = toArray[0][0]
         }
         for (i in 0..2) {
             if (toArray[0][i] == toArray[1][i] && toArray[2][i] == toArray[0][i] && toArray[0][i] != emptyCell) {
-                win = win + toArray[0][i]
+                win = toArray[0][i]
             }
             if (toArray[i][0] == toArray[i][1] && toArray[i][2] == toArray[i][0] && toArray[i][0] != emptyCell) {
-                win = win + toArray[i][0]
+                win = toArray[i][0]
             }
         }
-        return win
+        if (win == 'n') {return "" }
+        return win.toString()
     }
 
     fun outField(toArray: Array<CharArray>) {
         println("---------")
         for (i in 0..2) {
-            print("| " + toArray[i][0])
-            print(" " + toArray[i][1])
-            println(" " + toArray[i][2] + " |")
+            println("| ${toArray[i][0]} ${toArray[i][1]} ${toArray[i][2]} |")
         }
         println("---------")
     }
